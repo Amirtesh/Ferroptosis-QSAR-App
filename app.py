@@ -179,9 +179,11 @@ def plot_shap_bar(shap_values, feature_columns, top_n=15):
 # ---------------------------------------------------------------------------
 # Functional group detection
 # ---------------------------------------------------------------------------
-# Corrected functional group definitions derived from paper enrichment analysis.
-# Tendencies: Aniline => Inhibitor, Halogen => Inducer,
-#             Tertiary amine (non-aniline) => Inducer, Aromatic amine => Inhibitor.
+# Functional group definitions derived from the revised manuscript enrichment
+# analysis.  The inducer signature is heterogeneous: halogenated, amide-bearing,
+# secondary-amine-bearing, and phenolic motifs are all enriched among inducers.
+# Inhibitor-like profiles remain strongly associated with aniline-containing
+# aromatic amine scaffolds.
 FUNCTIONAL_GROUPS = [
     {
         "name": "Aniline motif",
@@ -189,19 +191,24 @@ FUNCTIONAL_GROUPS = [
         "tendency": "Inhibitor",
     },
     {
+        "name": "Secondary amine",
+        "smarts": "[NX3H1;!$(NC=O);!$(Nc1ccccc1)]",
+        "tendency": "Inhibitor / Inducer (context-dependent)",
+    },
+    {
+        "name": "Amide",
+        "smarts": "[NX3][CX3](=O)",
+        "tendency": "Inducer",
+    },
+    {
+        "name": "Phenol",
+        "smarts": "[OX2H]c1ccccc1",
+        "tendency": "Inducer",
+    },
+    {
         "name": "Halogen atom",
         "smarts": "[F,Cl,Br,I]",
         "tendency": "Inducer",
-    },
-    {
-        "name": "Tertiary amine",
-        "smarts": "[NX3;!$(NC=O);!$(Nc1ccccc1)]",
-        "tendency": "Inducer",
-    },
-    {
-        "name": "Aromatic amine",
-        "smarts": "[NH2]c1ccccc1",
-        "tendency": "Inhibitor",
     },
 ]
 
